@@ -19,8 +19,6 @@ export class CreateTransactionDto{
     @IsNotEmpty()
     @IsNumber()
     amount:number;
-    @IsOptional()
-    description?:string;
 }
 
 export class TransactionQuery{

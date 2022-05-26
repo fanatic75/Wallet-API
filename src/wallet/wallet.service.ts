@@ -1,4 +1,4 @@
-import { BadRequestException,  HttpException,  Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException,   Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateTransactionDto, CreateWalletDto } from './dto/create-wallet.dto';
 import { Db,  ObjectId } from 'mongodb';
 import { v4 } from "uuid";
@@ -17,7 +17,7 @@ export class WalletService {
     try {
       const doc = await this.walletCollection.insertOne({
         _id: walletId,
-        name, balance, date, transactions: [{ id: transactionId, walletId, amount: balance, balance, date: new Date(), type: "CREDIT", description: "First Transaction" }]
+        name, balance, date, transactions: [{ id: transactionId, walletId, amount: balance, balance, date: new Date(), type: "CREDIT",}]
       });
       return {
         id: doc.insertedId,
@@ -31,7 +31,7 @@ export class WalletService {
     }
   }
   async createTransaction(createTransaction: CreateTransactionDto, walletId: string) {
-    const { description, amount } = createTransaction;
+    const {  amount } = createTransaction;
     amount.toFixed(4);
     const transactionId = v4();
 
@@ -76,7 +76,6 @@ export class WalletService {
                   walletId,
                   id: transactionId,
                   type: amount < 0 ? "DEBIT" : "CREDIT",
-                  ...(description && {description}),
                   date: new Date()
                 }
               ]
