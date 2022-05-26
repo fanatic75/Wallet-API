@@ -1,13 +1,17 @@
 import { Type } from 'class-transformer';
-import {  IsNotEmpty, IsNumber, IsNumberString, Min} from 'class-validator';
+import {  IsNotEmpty, IsNumber,  IsOptional, Min} from 'class-validator';
 
 export class CreateWalletDto {
-    @IsNotEmpty()
     @IsNumber()
     @Min(0)
-    balance:number;
+    balance?:number = 0;
     @IsNotEmpty()
     name:string;
+
+    constructor(name:string, balance:number = 0){
+        this.name = name;
+        this.balance = balance
+    }
 }
 
 
@@ -15,8 +19,8 @@ export class CreateTransactionDto{
     @IsNotEmpty()
     @IsNumber()
     amount:number;
-    @IsNotEmpty()
-    description:string;
+    @IsOptional()
+    description?:string;
 }
 
 export class TransactionQuery{
@@ -32,8 +36,9 @@ export class TransactionQuery{
     @Type(()=>Number)
     @Min(1)
     limit?: number = 10;
-    constructor(skip = 0, limit = 10) {
+    constructor(walletId:string,skip = 0, limit = 10) {
         this.skip = skip;
         this.limit = limit;
+        this.walletId = walletId;
       }
 }

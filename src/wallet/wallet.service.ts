@@ -13,13 +13,15 @@ export class WalletService {
     balance.toFixed(4);
     const date = new Date();
     const walletId = new ObjectId();
+    const transactionId = v4();
     try {
       const doc = await this.walletCollection.insertOne({
         _id: walletId,
-        name, balance, date, transactions: [{ id: v4(), walletId, amount: balance, balance, date: new Date(), type: "CREDIT", description: "First Transaction" }]
+        name, balance, date, transactions: [{ id: transactionId, walletId, amount: balance, balance, date: new Date(), type: "CREDIT", description: "First Transaction" }]
       });
       return {
         id: doc.insertedId,
+        transactionId,
         balance,
         name,
         date
@@ -57,11 +59,11 @@ export class WalletService {
               [
                 {
                   balance: "$balance",
-                  amount : amount,
+                  amount : Math.abs(amount),
                   walletId,
                   id: transactionId,
                   type: amount < 0 ? "DEBIT" : "CREDIT",
-                  description,
+                  ...(description && {description}),
                   date: new Date()
                 }
               ]
@@ -73,7 +75,7 @@ export class WalletService {
     try {
       const doc = await this.walletCollection.findOneAndUpdate({ _id: new ObjectId(walletId) }, addTransactionPipeline, { returnDocument: "after" });
       return {
-        balance: doc.value.balance.toFixed(4),
+        balance: doc.value.balance,
         transactionId,
       }
     } catch {
