@@ -1,4 +1,4 @@
-import { BadRequestException,  Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import { BadRequestException,  HttpException,  Inject, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateTransactionDto, CreateWalletDto } from './dto/create-wallet.dto';
 import { Db,  ObjectId } from 'mongodb';
 import { v4 } from "uuid";
@@ -37,9 +37,22 @@ export class WalletService {
 
     const addTransactionPipeline = [
       {
-        $addFields: {
-          balance: {
+        $set: {
+          addedBalance: {
             $add: ["$balance", amount]
+          }
+        }
+      },
+      {
+        $addFields:{
+          balance:{
+            $cond:{
+              if:{
+                $gte: ["$addedBalance",0]
+              },
+              then : "$addedBalance",
+              else : "$balance"
+            }
           }
         }
       },
@@ -53,7 +66,7 @@ export class WalletService {
       },
       {
         "$addFields": {
-          "transactions": {
+          "newTransactions": {
             "$concatArrays": [
               "$transactions",
               [
@@ -71,14 +84,37 @@ export class WalletService {
           }
         }
       },
+      {
+        "$addFields":{
+          "transactions":{
+            $cond:{
+              if:{
+                $gte:["$addedBalance",0]
+              },
+              then : "$newTransactions",
+              else : "$transactions"
+            }
+          }
+        }
+      },
+      {
+        $unset:"addedBalance",
+      },
+      {
+        $unset:"newTransactions"
+      }
     ];
     try {
-      const doc = await this.walletCollection.findOneAndUpdate({ _id: new ObjectId(walletId) }, addTransactionPipeline, { returnDocument: "after" });
+      const doc = await this.walletCollection.findOneAndUpdate({ _id: new ObjectId(walletId) }, addTransactionPipeline, { returnDocument: "before" });
+      if(doc.value.balance + amount < 0)
+        throw new BadRequestException("Insufficient Balance");
       return {
-        balance: doc.value.balance,
+        balance: doc.value.balance+amount,
         transactionId,
       }
-    } catch {
+    } catch(err) {
+      if(err?.message === "Insufficient Balance")
+        throw err;
       throw new InternalServerErrorException();
     }
 
