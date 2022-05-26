@@ -10,19 +10,19 @@ export class WalletService {
 
   async create(createWalletDto: CreateWalletDto) {
     const { name, balance } = createWalletDto;
-    balance.toFixed(4);
+    const balanceFloat = parseFloat(balance.toFixed(4));
     const date = new Date();
     const walletId = new ObjectId();
     const transactionId = v4();
     try {
       const doc = await this.walletCollection.insertOne({
         _id: walletId,
-        name, balance, date, transactions: [{ id: transactionId, walletId, amount: balance, balance, date: new Date(), type: "CREDIT",}]
+        name, balance:balanceFloat, date, transactions: [{ id: transactionId, walletId, amount: balanceFloat, balance: balanceFloat, date: new Date(), type: "CREDIT",}]
       });
       return {
         id: doc.insertedId,
         transactionId,
-        balance,
+        balance:balanceFloat,
         name,
         date
       };
@@ -108,7 +108,7 @@ export class WalletService {
       if(doc.value.balance + amount < 0)
         throw new BadRequestException("Insufficient Balance");
       return {
-        balance: doc.value.balance+amount,
+        balance: parseFloat(((doc.value.balance+amount) as number).toFixed(4)),
         transactionId,
       }
     } catch(err) {
