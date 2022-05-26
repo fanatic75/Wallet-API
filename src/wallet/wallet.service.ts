@@ -72,7 +72,7 @@ export class WalletService {
               [
                 {
                   balance: "$balance",
-                  amount : Math.abs(amount),
+                  amount : parseFloat(Math.abs(amount).toFixed(4)),
                   walletId,
                   id: transactionId,
                   type: amount < 0 ? "DEBIT" : "CREDIT",
