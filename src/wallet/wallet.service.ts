@@ -125,8 +125,9 @@ export class WalletService {
     const cursor = this.walletCollection.find({ _id: new ObjectId(walletId) }).project({ "transactions": { "$slice": [skip, limit] } });
     try {
       const result = await cursor.toArray();
-      return result;
-
+      if(result[0] && result[0].transactions)
+      return result[0].transactions;
+      throw new InternalServerErrorException();
     }
     catch {
       throw new InternalServerErrorException();
