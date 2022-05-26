@@ -121,14 +121,14 @@ export class WalletService {
 
 
   async findAllTransactions(walletId: string, skip: number, limit: number) {
-    const cursor = this.walletCollection.find({ _id: new ObjectId(walletId) }).project({ "transactions": { "$slice": [skip, limit] } });
+    const cursor = this.walletCollection.find({ _id: new ObjectId(walletId) }).project((limit ? { "transactions":  {"$slice":[skip,limit]}} : {}));
     try {
       const result = await cursor.toArray();
       if(result[0] && result[0].transactions)
       return result[0].transactions;
       throw new InternalServerErrorException();
     }
-    catch {
+    catch (err){
       throw new InternalServerErrorException();
     }
 

@@ -32,9 +32,10 @@ export class TransactionQuery{
 
 
     @Type(()=>Number)
+    @IsOptional()
     @Min(1)
-    limit?: number = 10;
-    constructor(walletId:string,skip = 0, limit = 10) {
+    limit?: number |  undefined;
+    constructor(walletId:string,skip = 0, limit:number |undefined) {
         this.skip = skip;
         this.limit = limit;
         this.walletId = walletId;
