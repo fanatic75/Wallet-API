@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body,  Param,  Query } from '@nestjs/common';
 import { WalletService } from './wallet.service';
 import { CreateTransactionDto, CreateWalletDto, TransactionQuery } from './dto/create-wallet.dto';
 
-@Controller('wallet')
+@Controller('')
 export class WalletController {
   constructor(private readonly walletService: WalletService) {}
 
