@@ -1,3 +1,36 @@
+Database : MongoDB
+
+A single collection exists : Wallet
+
+Collection contains the following document structure
+
+Id:string
+Balance:number
+Name:string
+Date : Date JS
+Transactions: Array of transaction object
+
+Each transaction object contains 
+
+Id:string
+WalletId:string
+Amount:number (transaction amount)
+Balance: number (amount after transaction value)
+Date : Date JS
+Type : string 
+
+
+The biggest chalange in query was storing transactions in the desired data needed in output 
+
+For that I have used an aggregation query in MongoDB which adds the amount to previous balance of wallet  which results all the operations in one DB query. 
+
+
+Attaching a postman collection to test the routes and understand the structure of routes 
+
+Web app frontend link : https://wallet-frontend-alpha.vercel.app/
+
+Check below on how to run the rest api
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
@@ -33,6 +66,9 @@ $ npm install
 ```
 
 ## Running the app
+
+#Add the env file in root directory, check .env.example for the configuration
+
 
 ```bash
 # development
