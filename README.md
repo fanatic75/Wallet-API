@@ -8,16 +8,18 @@ Collection contains the following document structure
 Balance:number
 Name:string
 Date : Date JS
-Transactions: Array of transaction object```
+Transactions: Array of transaction object
+```
 
 Each transaction object contains 
 
-Id:string
+```Id:string
 WalletId:string
 Amount:number (transaction amount)
 Balance: number (amount after transaction value)
 Date : Date JS
 Type : string 
+```
 
 
 The biggest chalange in query was storing transactions in the desired data needed in output 
