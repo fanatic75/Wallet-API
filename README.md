@@ -4,11 +4,11 @@ A single collection exists : Wallet
 
 Collection contains the following document structure
 
-Id:string
+```Id:string
 Balance:number
 Name:string
 Date : Date JS
-Transactions: Array of transaction object
+Transactions: Array of transaction object```
 
 Each transaction object contains 
 
