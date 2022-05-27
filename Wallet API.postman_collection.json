@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "950f0de1-bb52-47c5-9d70-de331d05c457",
+		"name": "Wallet API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Setup Wallet",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Wallet example name\",\r\n    \"amount\":\"2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://wallet-api12.herokuapp.com/setup",
+					"protocol": "https",
+					"host": [
+						"wallet-api12",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"setup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add a transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\":-3\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://wallet-api12.herokuapp.com/transact/:walletId",
+					"protocol": "https",
+					"host": [
+						"wallet-api12",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"transact",
+						":walletId"
+					],
+					"variable": [
+						{
+							"key": "walletId",
+							"value": "62906299413fd4302955b7d5"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Transactions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://wallet-api12.herokuapp.com/transactions?walletId=628fb2192f8504321f11d34e",
+					"protocol": "https",
+					"host": [
+						"wallet-api12",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"transactions"
+					],
+					"query": [
+						{
+							"key": "walletId",
+							"value": "628fb2192f8504321f11d34e"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Wallet",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://wallet-api12.herokuapp.com/wallet/628e9ef13a26f23a01e5104b",
+					"protocol": "https",
+					"host": [
+						"wallet-api12",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"wallet",
+						"628e9ef13a26f23a01e5104b"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

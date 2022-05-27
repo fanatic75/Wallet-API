@@ -27,6 +27,8 @@ For that I have used an aggregation query in MongoDB which adds the amount to pr
 
 Attaching a postman collection to test the routes and understand the structure of routes 
 
+API host : https://wallet-api12.herokuapp.com/
+
 Web app frontend link : https://wallet-frontend-alpha.vercel.app/
 
 Check below on how to run the rest api
